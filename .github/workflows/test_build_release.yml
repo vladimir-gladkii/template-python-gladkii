@@ -95,9 +95,7 @@ jobs:
         run: |
           chmod +x ./tools/version.sh
           ./tools/version.sh "${{ github.sha }}" "${{ secrets.DOCKER_IMAGE_NAME }}"
-          APP_VERSION=$(cat "./VERSION")
           DOCKER_IMAGES=$(cat "./DOCKER_IMAGES")
-          echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
           echo "DOCKER_IMAGES=$DOCKER_IMAGES" >> $GITHUB_ENV
 
       # - name: Build and push docker image
@@ -119,7 +117,9 @@ jobs:
           helm package ../charts/app
 
       - name: Create release
-        run: gh release upload ${{ env.APP_VERSION }} ./dist/*.{tar.gz,tgz}
+        run: |
+          APP_VERSION=$(cat "./VERSION")
+          gh release upload "$APP_VERSION" ./dist/*.{tar.gz,tgz}
         env:
           GH_TOKEN: ${{ github.token }}
 
