@@ -80,7 +80,7 @@ get_last_release() {
   git fetch --tags
   git fetch --prune --unshallow || true
 
-  LAST_RELEASE=$(git tag --list --merged "$GIT_SHA" --sort=-version:refname "[0-9]*.[0-9]*.[0-9]*" | head -n 1)
+  LAST_RELEASE=$(git tag --list --merged "$GIT_SHA" --sort=-v:refname | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$" | head -n 1)
 
   echo "$LAST_RELEASE"
 }
