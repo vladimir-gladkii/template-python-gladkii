@@ -118,16 +118,11 @@ jobs:
           cd ./dist
           helm package ../charts/app
 
-      - name: Create tag
-        run: |
-          git tag "${{ env.APP_VERSION }}"
-          git push origin "${{ env.APP_VERSION }}"
-
       - name: Create release
         run: |
           echo $(pwd)
           echo $(ls -l ./dist)
-          gh release upload ${{ env.APP_VERSION }} ./dist/*#${{ env.APP_VERSION }}
+          gh release create ${{ env.APP_VERSION }} ./dist/*
         env:
           GH_TOKEN: ${{ github.token }}
 
