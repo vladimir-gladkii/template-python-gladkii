@@ -108,21 +108,21 @@ jobs:
 
       - name: Create dist dir
         run: |
-          mkdir -p ./dist
+          mkdir -p ./.cr-release-packages
 
       - name: Build repo release
-        run: tar -czvf "./dist/${{ env.APP_VERSION }}.tar.gz" .
+        run: tar -czvf "./.cr-release-packages/${{ env.APP_VERSION }}.tar.gz" .
 
       - name: Create helm chart release
         run: |
-          cd ./dist
-          helm package ../charts/app
+          cd ./.cr-release-packages
+          helm package ../charts/.cr-release-packages
 
       - name: Create release
         run: |
           echo $(pwd)
-          echo $(ls -l ./dist)
-          gh release create ${{ env.APP_VERSION }} ./dist/*
+          echo $(ls -l ./.cr-release-packages)
+          gh release create ${{ env.APP_VERSION }} ./.cr-release-packages/*
         env:
           GH_TOKEN: ${{ github.token }}
 
