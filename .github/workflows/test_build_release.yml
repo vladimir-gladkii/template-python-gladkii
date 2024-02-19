@@ -110,8 +110,8 @@ jobs:
         run: |
           mkdir -p ./dist
 
-      - name: Build app package
-        run: tar -czvf --exclude="./dist/" ./dist/${{ env.APP_VERSION }}.tar.gz .
+      - name: Build repo release
+        run: tar -czvf ./dist/${{ env.APP_VERSION }}.tar.gz .
 
       - name: Create helm chart release
         run: |
