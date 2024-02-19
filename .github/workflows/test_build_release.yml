@@ -114,6 +114,7 @@ jobs:
 
       - name: Create helm chart release
         run: |
+          mkdir -p ./dist
           cd ./dist
           helm package ../dist/app
 
