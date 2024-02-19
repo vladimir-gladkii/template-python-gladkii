@@ -106,21 +106,10 @@ jobs:
       #     push: true
       #     tags: ${{ env.DOCKER_IMAGES }}
 
-      - name: Create dist dir
-        run: |
-          mkdir -p ./.cr-release-packages
-
-      - name: Build repo release
-        run: tar -czvf "./.cr-release-packages/${{ env.APP_VERSION }}.tar.gz" .
-
-      - name: Create helm chart release
-        run: |
-          cd ./.cr-release-packages
-          helm package ../charts/app
-
       - name: Create release
         run: |
-          gh release create ${{ env.APP_VERSION }} ./.cr-release-packages/*
+          tar -czvf "${{ env.APP_VERSION }}.tar.gz" .
+          gh release create ${{ env.APP_VERSION }} "${{ env.APP_VERSION }}.tar.gz"
         env:
           GH_TOKEN: ${{ github.token }}
 
@@ -128,5 +117,3 @@ jobs:
         uses: helm/chart-releaser-action@v1.6.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        with:
-          skip_packaging: true
