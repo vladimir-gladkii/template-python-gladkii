@@ -120,8 +120,6 @@ jobs:
 
       - name: Create release
         run: |
-          echo $(pwd)
-          echo $(ls -l ./.cr-release-packages)
           gh release create ${{ env.APP_VERSION }} ./.cr-release-packages/*
         env:
           GH_TOKEN: ${{ github.token }}
