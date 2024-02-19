@@ -127,7 +127,7 @@ jobs:
         run: |
           echo $(pwd)
           echo $(ls -l ./dist)
-          gh release upload "${{ env.APP_VERSION }}" ./dist/*.*
+          gh release upload ${{ env.APP_VERSION }} ./dist/*#${{ env.APP_VERSION }}
         env:
           GH_TOKEN: ${{ github.token }}
 
