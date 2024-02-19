@@ -118,8 +118,9 @@ jobs:
 
       - name: Create release
         run: |
+          ls -l ./dist
           APP_VERSION=$(cat "./VERSION")
-          gh release upload "$APP_VERSION" ./dist/*.{tar.gz,tgz}
+          gh release upload ${{ APP_VERSION }} ./dist/*.{tar.gz,tgz}
         env:
           GH_TOKEN: ${{ github.token }}
 
