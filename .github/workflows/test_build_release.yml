@@ -109,7 +109,7 @@ jobs:
           mkdir -p ./dist
 
       - name: Build repo release
-        run: tar -czvf ./dist/${{ env.APP_VERSION }}.tar.gz .
+        run: tar -czvf "./dist/${APP_VERSION}.tar.gz" .
 
       - name: Create helm chart release
         run: |
