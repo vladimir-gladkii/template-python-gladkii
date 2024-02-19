@@ -116,7 +116,7 @@ jobs:
       - name: Create helm chart release
         run: |
           cd ./.cr-release-packages
-          helm package ../charts/.cr-release-packages
+          helm package ../charts/app
 
       - name: Create release
         run: |
