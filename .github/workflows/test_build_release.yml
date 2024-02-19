@@ -103,9 +103,6 @@ jobs:
           echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
           echo "DOCKER_IMAGES=$DOCKER_IMAGES" >> $GITHUB_ENV
 
-      - name: Generate OpenAPI spec for release (with version)
-        run: poetry run python ./tools/extract_openapi.py app.main:app --app-dir . --out ./openapi/openapi.yaml
-
       # - name: Build and push docker image
       #   uses: docker/build-push-action@v5
       #   with:
