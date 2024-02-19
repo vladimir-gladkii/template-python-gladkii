@@ -116,7 +116,7 @@ jobs:
         run: |
           mkdir -p ./dist
           cd ./dist
-          helm package ../dist/app
+          helm package ../charts/app
 
       - name: Create release
         run: gh release create ${{ env.APP_VERSION }} ./dist/*.{tar.gz,tgz}
