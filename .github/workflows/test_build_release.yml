@@ -113,13 +113,20 @@ jobs:
         run: |
           tar --exclude=".env" --exclude=".cr-release-packages" -czvf "./.cr-release-packages/${{ env.APP_VERSION }}.tgz" .
 
-      # - name: Create release
-      #   run: |
-      #     gh release create ${{ env.APP_VERSION }} ./.cr-release-packages/*
-      #   env:
-      #     GH_TOKEN: ${{ github.token }}
+      - name: Create helm chart release
+        run: |
+          cd ./.cr-release-packages
+          helm package ../charts/app
+
+      - name: Create release
+        run: |
+          gh release create ${{ env.APP_VERSION }} ./.cr-release-packages/*
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
         env:
           CR_TOKEN: ${{ github.token }}
+        with:
+          skip_packaging: true
