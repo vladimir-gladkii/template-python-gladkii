@@ -116,6 +116,12 @@ jobs:
           cd ./dist
           helm package ../charts/app
 
+      - name: Create tag
+        run: |
+          APP_VERSION=$(cat "./VERSION")
+          git tag "${APP_VERSION}"
+          git push origin "${APP_VERSION}"
+
       - name: Create release
         run: |
           echo $(pwd)
