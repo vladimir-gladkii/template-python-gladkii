@@ -132,11 +132,11 @@ main() {
   make_docker_images_with_tags "$DOCKER_IMAGE_NAME"
   patch_versions_in_project_files "$DOCKER_IMAGE_NAME"
 
-  VERSION_APP=$(cat "${VERSION_APP_PATH}")
-  if ! git rev-parse -q --verify "refs/tags/$VERSION_APP" >/dev/null; then
-    git tag "$VERSION_APP"
-    git push origin "$VERSION_APP"
-  fi
+  # VERSION_APP=$(cat "${VERSION_APP_PATH}")
+  # if ! git rev-parse -q --verify "refs/tags/$VERSION_APP" >/dev/null; then
+  #   git tag "$VERSION_APP"
+  #   git push origin "$VERSION_APP"
+  # fi
 }
 
 main "$@"
