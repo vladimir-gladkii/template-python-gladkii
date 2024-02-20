@@ -79,6 +79,11 @@ jobs:
       - name: Install poetry
         run: pip install poetry
 
+      - name: Install dependencies
+        run: |
+          poetry config virtualenvs.in-project true
+          poetry install --no-root --with dev
+
       - name: Install Helm
         uses: azure/setup-helm@v3
 
@@ -125,10 +130,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-      - name: Generate Index.yaml
+      - name: Generate index.yaml
         run: helm repo index --url https://${{ github.repository_owner }}.github.io/${{ github.repository }}/ .
 
-      - name: Publish to GitHub Pages
+      - name: Publish to github pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ github.token }}
