@@ -132,8 +132,10 @@ jobs:
 
       - name: Generate index.yaml
         run: |
-          wget https://${{ github.repository_owner }}.github.io/${{ github.repository }}/index.yaml -O existing_index.yaml || touch existing_index.yaml
-          helm repo index --url https://${{ github.repository_owner }}.github.io/${{ github.repository }}/ --merge existing_index.yaml .
+          REPO_URL="https://${{ github.repository_owner }}.github.io/${{ github.repository }}"
+          echo "$REPO_URL"
+          wget "${REPO_URL}/index.yaml" -O existing_index.yaml || touch existing_index.yaml
+          helm repo index --merge existing_index.yaml .
 
       - name: Publish to github pages
         uses: peaceiris/actions-gh-pages@v3
