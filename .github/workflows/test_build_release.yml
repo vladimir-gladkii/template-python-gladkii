@@ -132,11 +132,10 @@ jobs:
 
       - name: Generate index.yaml
         run: |
-          # REPO_URL1="https://${{ github.repository_owner }}.github.io/${{ github.repository }}"
+          # REPO_URL="https://${{ github.repository_owner }}.github.io/${{ github.repository }}"
           REPO_URL="https://hiro-microdatacenters-bv.github.io/template-python"
-          echo "$REPO_URL"
-          # wget "${REPO_URL}/index.yaml" -O existing_index.yaml || touch existing_index.yaml
-          helm repo index --url "${REPO_URL}" .
+          wget -q "${REPO_URL}/index.yaml" || { [ $? -eq 8 ] && touch index.yaml; }
+          helm repo index --merge index.yaml .
 
       - name: Publish to github pages
         uses: peaceiris/actions-gh-pages@v3
