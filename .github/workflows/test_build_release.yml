@@ -131,7 +131,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
 
       - name: Generate index.yaml
-        run: helm repo index --url https://${{ github.repository_owner }}.github.io/${{ github.repository }}/ .
+        run: |
+          wget https://${{ github.repository_owner }}.github.io/${{ github.repository }}/index.yaml -O existing_index.yaml || touch existing_index.yaml
+          helm repo index --url https://${{ github.repository_owner }}.github.io/${{ github.repository }}/ --merge existing_index.yaml .
 
       - name: Publish to github pages
         uses: peaceiris/actions-gh-pages@v3
