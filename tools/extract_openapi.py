@@ -25,8 +25,8 @@ def main() -> None:
         default="openapi.yaml",
     )
     parser.add_argument(
-        "--version",
-        help="OpenAPI version",
+        "--app_version",
+        help="App version",
         default=None,
     )
 
@@ -40,13 +40,10 @@ def main() -> None:
     app = import_from_string(args.app)
     openapi = app.openapi()
 
-    if args.version is not None:
-        version = args.version
-    else:
-        version = openapi.get("openapi", "unknown version")
-    openapi["openapi"] = version
+    if args.app_version is not None:
+        openapi["info"]["version"] = args.app_version
 
-    print(f"writing openapi spec v{version}")
+    print("writing openapi spec")
     dir = os.path.dirname(args.out)
     if dir:
         os.makedirs(dir, exist_ok=True)

@@ -118,7 +118,7 @@ jobs:
           helm package ../charts/app
 
       - name: Generate openapi.yaml
-        run: poetry run python ./tools/extract_openapi.py app.main:app --app-dir . --out ./release/openapi.yaml --version "${{ env.APP_VERSION }}"
+        run: poetry run python ./tools/extract_openapi.py app.main:app --app-dir . --out ./release/openapi.yaml --app_version "${{ env.APP_VERSION }}"
 
       - name: Create github release
         run: gh release create "${{ env.APP_VERSION }}" ./release/*
