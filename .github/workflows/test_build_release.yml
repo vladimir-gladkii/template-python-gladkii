@@ -76,6 +76,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install poetry
+        run: pip install poetry
+
       - name: Install Helm
         uses: azure/setup-helm@v3
 
