@@ -111,9 +111,8 @@ jobs:
         env:
           CR_TOKEN: ${{ github.token }}
 
-      - name: Update release
+      - name: Create release
         run: |
-          tar -czvf "./${{ env.APP_VERSION }}.tgz" .
-          gh release update ${{ env.APP_VERSION }} "./${{ env.APP_VERSION }}.tgz"
+          gh release create --prerelease
         env:
           GH_TOKEN: ${{ github.token }}
