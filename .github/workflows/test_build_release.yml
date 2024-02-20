@@ -49,11 +49,6 @@ jobs:
       #     poetry run flake8 .
       #     poetry run black . --check --diff
 
-      # - name: Verify OpenAPI spec has been updated
-      #   run: |
-      #     poetry run python ./tools/extract_openapi.py app.main:app --app-dir . --out openapi_generated.yaml
-      #     git diff --exit-code ./openapi/openapi.yaml openapi_generated.yaml
-
       # - name: Run tests
       #   run: poetry run pytest
 
@@ -134,8 +129,7 @@ jobs:
         run: |
           REPO_URL="https://${{ github.repository_owner }}.github.io/${{ github.repository }}"
           # REPO_URL="https://hiro-microdatacenters-bv.github.io/template-python"
-          wget -q "${REPO_URL}/index.yaml" || { [ $? -eq 8 ] && touch index.yaml; }
-          helm repo index --merge index.yaml .
+          ./tools/generate_repo_index.sh "$REPO_URL"
 
       - name: Publish to github pages
         uses: peaceiris/actions-gh-pages@v3
