@@ -106,23 +106,24 @@ jobs:
       #     push: true
       #     tags: ${{ env.DOCKER_IMAGES }}
 
-      - name: Create dist dir
+      - name: Create release dir
         run: mkdir -p ./release
 
-      - name: Create helm chart release
+      - name: Package helm chart
         run: |
           cd ./release
           helm package ../charts/app
 
+      - name: Generate openapi.yaml
+        run: poetry run python ./tools/extract_openapi.py app.main:app --app-dir . --out ./release/openapi.yaml
+
       - name: Create release
-        run: |
-          gh release create ${{ env.APP_VERSION }} ./release/* ./openapi/openapi.yaml
+        run: gh release create ${{ env.APP_VERSION }} ./release/*
         env:
           GH_TOKEN: ${{ github.token }}
 
       - name: Generate Index.yaml
-        run: |
-          helm repo index --url https://${{ github.repository_owner }}.github.io/${{ github.repository }}/ .
+        run: helm repo index --url https://${{ github.repository_owner }}.github.io/${{ github.repository }}/ .
 
       - name: Publish to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
