@@ -118,17 +118,16 @@ jobs:
           helm package ../charts/app
 
       - name: Generate openapi.yaml
-        run: poetry run python ./tools/extract_openapi.py app.main:app --app-dir . --out ./release/openapi.yaml
+        run: poetry run python ./tools/extract_openapi.py app.main:app --app-dir . --out ./release/openapi.yaml --version "${{ env.APP_VERSION }}"
 
-      - name: Create release
-        run: gh release create ${{ env.APP_VERSION }} ./release/*
+      - name: Create github release
+        run: gh release create "${{ env.APP_VERSION }}" ./release/*
         env:
           GH_TOKEN: ${{ github.token }}
 
       - name: Generate index.yaml
         run: |
-          # REPO_URL="https://${{ github.repository_owner }}.github.io/${{ github.repository }}"
-          REPO_URL="https://hiro-microdatacenters-bv.github.io/template-python"
+          REPO_URL="https://${{ github.repository_owner }}.github.io/${{ github.repository }}"
           chmod +x ./tools/helm_chart_repo.sh
           ./tools/helm_chart_repo.sh "$REPO_URL"
 
@@ -138,4 +137,3 @@ jobs:
           github_token: ${{ github.token }}
           publish_dir: .
           publish_branch: gh-pages
-          force_orphan: true
