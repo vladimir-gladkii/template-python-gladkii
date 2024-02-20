@@ -116,7 +116,7 @@ jobs:
       - name: Generate index.yaml
         run: |
           chmod +x ./tools/helm_chart_repo.sh
-          ./tools/helm_chart_repo.sh "https://${{ github.repository_owner }}.github.io/${{ github.repository }}"
+          ./tools/helm_chart_repo.sh "${{ secrets.HELM_REPO_URL }}"
 
       - name: Publish to github pages
         uses: peaceiris/actions-gh-pages@v3
