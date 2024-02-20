@@ -132,8 +132,8 @@ jobs:
 
       - name: Generate index.yaml
         run: |
-          # REPO_URL="https://${{ github.repository_owner }}.github.io/${{ github.repository }}"
-          REPO_URL="https://hiro-microdatacenters-bv.github.io/template-python"
+          REPO_URL="https://${{ github.repository_owner }}.github.io/${{ github.repository }}"
+          # REPO_URL="https://hiro-microdatacenters-bv.github.io/template-python"
           wget -q "${REPO_URL}/index.yaml" || { [ $? -eq 8 ] && touch index.yaml; }
           helm repo index --merge index.yaml .
 
