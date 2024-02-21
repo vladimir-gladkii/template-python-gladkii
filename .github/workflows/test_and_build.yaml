@@ -15,8 +15,8 @@ on:
 
 jobs:
   test:
-    uses: ./.github/actions/test.yaml
+    uses: ./.github/workflows/test.yaml
 
-  build_and_release:
+  build:
     needs: [test]
-    uses: ./.github/actions/build_web.yaml
+    uses: ./.github/workflows/build_web.yaml
