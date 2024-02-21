@@ -123,7 +123,7 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Create a github release
-        run: gh release create "${{ env.APP_VERSION }}" ./release/*
+        run: gh release create "${{ env.APP_VERSION }}" ./release/* ./dist/*
         env:
           GH_TOKEN: ${{ github.token }}
 
