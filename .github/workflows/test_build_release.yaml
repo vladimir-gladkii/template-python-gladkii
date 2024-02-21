@@ -103,11 +103,19 @@ jobs:
       - name: Generate openapi.yaml
         run: poetry run python ./tools/extract_openapi.py app.main:app --app-dir . --out ./release/openapi.yaml --app_version "${{ env.APP_VERSION }}"
 
-      - name: Build and publish to pypi
+      - name: Build package
         run: |
           poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
           poetry build
-          poetry publish
+
+      - name: Publish to pypi
+        # The version in PyPI must follow the PEP 440 standard.
+        # Semantic versioning is not supported by PyPI.
+        # Therefore, only the release version is published.
+        run: |
+          if [[ ${{ github.ref }} =~ ^refs/tags/[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            poetry publish
+          fi
 
       - name: Configure Git
         run: |

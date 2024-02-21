@@ -58,7 +58,7 @@ make_version() {
     # so we can take the most generic one and set to the chart values later
     BRANCH_TOKEN=$(echo "${BRANCH//[^a-zA-Z0-9-_.]/-}" | cut -c1-16 | sed -e 's/-$//')
 
-    VERSION_APP="$VERSION_BASE.dev${GIT_COUNT}-${BRANCH_TOKEN}-${SHORT_SHA}"
+    VERSION_APP="$VERSION_BASE+dev${GIT_COUNT}-${BRANCH_TOKEN}-${SHORT_SHA}"
     VERSION_CHART="$VERSION_BASE-dev.${GIT_COUNT}.${BRANCH_TOKEN}.${SHORT_SHA}"
     VERSION_DOCKER="$VERSION_CHART"
   fi
