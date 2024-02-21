@@ -99,7 +99,9 @@ poetry run pytest
 6. Building package:
 
 ```bash
+poetry config pypi-token.pypi <pypi token>
 poetry build
+poetry publish
 ```
 
 ## Docker
