@@ -42,27 +42,9 @@ jobs:
       # - name: Run tests
       #   run: poetry run pytest
 
-  release_draft:
+  build_and_release:
     runs-on: ubuntu-latest
     needs: [test]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Make versions
-        run: |
-          chmod +x ./tools/version.sh
-          ./tools/version.sh "${{ github.sha }}" "${{ secrets.DOCKER_IMAGE_NAME }}"
-          echo "APP_VERSION=$(cat "./VERSION")" >> $GITHUB_ENV
-
-      - name: Create a draft github release
-        run: gh release create "${{ env.APP_VERSION }}" --draft
-        env:
-          GH_TOKEN: ${{ github.token }}
-
-  build_web:
-    runs-on: ubuntu-latest
-    needs: [release_draft]
     permissions:
       contents: write
     steps:
@@ -121,8 +103,19 @@ jobs:
       - name: Generate openapi.yaml
         run: poetry run python ./tools/extract_openapi.py app.main:app --app-dir . --out ./release/openapi.yaml --app_version "${{ env.APP_VERSION }}"
 
-      - name: Upload files to the github release
-        run: gh release upload "${{ env.APP_VERSION }}" ./release/*
+      - name: Build and publish to pypi
+        run: |
+          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+          poetry build
+          poetry publish
+
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Create a github release
+        run: gh release create "${{ env.APP_VERSION }}" ./release/*
         env:
           GH_TOKEN: ${{ github.token }}
 
@@ -137,63 +130,3 @@ jobs:
           github_token: ${{ github.token }}
           publish_dir: .
           publish_branch: gh-pages
-
-  build_lib:
-    runs-on: ubuntu-latest
-    needs: [release_draft]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install poetry
-        run: pip install poetry
-
-      - name: Install dependencies
-        run: |
-          poetry config virtualenvs.in-project true
-          poetry install --no-root
-
-      - name: Make versions and patch files
-        run: |
-          chmod +x ./tools/version.sh
-          ./tools/version.sh "${{ github.sha }}" ""
-          echo "APP_VERSION=$(cat "./VERSION")" >> $GITHUB_ENV
-
-      - name: Build and publish
-        run: |
-          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
-          poetry build
-          poetry publish
-
-      - name: Upload files to the github release
-        run: gh release upload "${{ env.APP_VERSION }}" ./dist/*
-        env:
-          GH_TOKEN: ${{ github.token }}
-
-  publish_release:
-    runs-on: ubuntu-latest
-    needs: [build_web, build_lib]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Make versions
-        run: |
-          chmod +x ./tools/version.sh
-          ./tools/version.sh "${{ github.sha }}" "${{ secrets.DOCKER_IMAGE_NAME }}"
-          echo "APP_VERSION=$(cat "./VERSION")" >> $GITHUB_ENV
-
-      - name: Configure Git
-        run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-
-      - name: Create draft github release
-        run: gh release edit "${{ env.APP_VERSION }}" --publish
-        env:
-          GH_TOKEN: ${{ github.token }}
