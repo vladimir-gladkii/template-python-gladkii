@@ -42,9 +42,8 @@ jobs:
       - name: Run tests
         run: poetry run pytest
 
-  build_web:
+  build:
     needs: [test]
     secrets: inherit
-    uses: ./.github/workflows/build_web.yaml
-    # Use build_lib.yaml for lib workflow
-    # uses: ./.github/workflows/build_lib.yaml
+    # Replace build_web.yaml to build_lib.yaml for lib workflow
+    uses: ./.github/workflows/build_lib.yaml
