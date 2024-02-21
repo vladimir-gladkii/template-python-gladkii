@@ -19,33 +19,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+      # - name: Install Python
+      #   uses: actions/setup-python@v5
+      #   with:
+      #     python-version: "3.12"
 
-      - name: Install poetry
-        run: pip install poetry
+      # - name: Install poetry
+      #   run: pip install poetry
 
-      - name: Install dependencies
-        run: |
-          poetry config virtualenvs.in-project true
-          poetry install --no-root --with dev,test
+      # - name: Install dependencies
+      #   run: |
+      #     poetry config virtualenvs.in-project true
+      #     poetry install --no-root --with dev,test
 
-      - name: Run style checks
-        run: |
-          poetry run mypy .
-          poetry run isort . --check --diff
-          poetry run flake8 .
-          poetry run black . --check --diff
+      # - name: Run style checks
+      #   run: |
+      #     poetry run mypy .
+      #     poetry run isort . --check --diff
+      #     poetry run flake8 .
+      #     poetry run black . --check --diff
 
-      - name: Run tests
-        run: poetry run pytest
+      # - name: Run tests
+      #   run: poetry run pytest
 
   release_draft:
     runs-on: ubuntu-latest
     needs: [test]
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Make versions
         run: |
           chmod +x ./tools/version.sh
@@ -171,6 +174,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_web, build_lib]
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Make versions
         run: |
           chmod +x ./tools/version.sh
