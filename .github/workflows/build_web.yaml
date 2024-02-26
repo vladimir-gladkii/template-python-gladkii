@@ -69,4 +69,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           index_dir: "."
-          target_dir: "./charts/build/"
+          target_dir: "./charts-releases/"
