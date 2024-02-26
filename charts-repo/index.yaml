@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   app:
   - apiVersion: v2
+    appVersion: 3.2.1-dev.16.main.75fe2c71
+    created: "2024-02-26T12:04:35.457334534Z"
+    description: Web service template in Python for reuse.
+    digest: b0b8dae02974abf362dd58bd71dcefd564514f717f88d2220d85b730ec377ea3
+    name: app
+    type: application
+    urls:
+    - https://vladimir-gladkii.github.io/template-python-gladkii/charts-repo/app-3.2.1-dev.16.main.75fe2c71.tgz
+    version: 3.2.1-dev.16.main.75fe2c71
+  - apiVersion: v2
     appVersion: 3.2.1-dev.15.main.5bdebef7
     created: "2024-02-26T10:56:52.147353849Z"
     description: Web service template in Python for reuse.
@@ -11,4 +21,4 @@ entries:
     urls:
     - https://vladimir-gladkii.github.io/template-python-gladkii/charts-repo/app-3.2.1-dev.15.main.5bdebef7.tgz
     version: 3.2.1-dev.15.main.5bdebef7
-generated: "2024-02-26T10:56:52.146824731Z"
+generated: "2024-02-26T12:04:35.456853322Z"
