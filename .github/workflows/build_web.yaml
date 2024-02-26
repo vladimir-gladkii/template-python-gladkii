@@ -68,5 +68,4 @@ jobs:
         uses: stefanprodan/helm-gh-pages@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          index_dir: "."
-          target_dir: "./charts-releases/"
+          target_dir: "./charts-repo/"
