@@ -16,14 +16,21 @@ generate_repo_index() {
   echo "ARTIFACTS_URL: $ARTIFACTS_URL"
 
   if wget -q "$REPO_INDEX_FILE" -O index.yaml; then
-    echo "File ${REPO_INDEX_FILE} downloaded. Add a new release to index.yaml."
-    helm repo index --merge index.yaml --url "${ARTIFACTS_URL}" "$DIR"
+    echo "File ${REPO_INDEX_FILE} downloaded."
   elif [ $? -eq 8 ]; then
-    echo "File ${REPO_INDEX_FILE} does not exist. Create new index.yaml."
-    helm repo index --url "${ARTIFACTS_URL}" "$DIR"
+    echo "File ${REPO_INDEX_FILE} does not exist. Create index.yaml."
+    touch index.yaml
   else
     echo "Error: File ${REPO_INDEX_FILE} is not available."
     exit 1
+  fi
+
+  if [ -s "index.yaml" ]; then
+    echo "File ${REPO_INDEX_FILE} is not empty. Add new release to index.yaml."
+    helm repo index --merge index.yaml --url "${ARTIFACTS_URL}" "$DIR"
+  else
+    echo "File ${REPO_INDEX_FILE} is empty. Replace index.yaml."
+    helm repo index --url "${ARTIFACTS_URL}" "$DIR"
   fi
 }
 
